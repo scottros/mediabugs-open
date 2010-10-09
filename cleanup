@@ -1,0 +1,50 @@
+#!/bin/sh
+
+# Give us a fresh start.
+
+# Remove all symlinks and/or copies created by the 'build' script.
+
+for name in PeoplePods.php                      \
+            lib                                 \
+            peoplepods/themes/mediabugs         \
+            peoplepods/pods/akismet             \
+            peoplepods/pods/bugs_api            \
+            peoplepods/pods/bugs_authentication \
+            peoplepods/pods/bugs_bugs           \
+            peoplepods/pods/bugs_cron           \
+            peoplepods/pods/bugs_dashboard      \
+            peoplepods/pods/bugs_featured       \
+            peoplepods/pods/bugs_features       \
+            peoplepods/pods/bugs_home           \
+            peoplepods/pods/bugs_lists          \
+            peoplepods/pods/bugs_moderation     \
+            peoplepods/pods/bugs_outlets        \
+            peoplepods/pods/bugs_profiles       \
+            peoplepods/pods/bugs_reports        \
+            peoplepods/pods/bugs_send_this      \
+            peoplepods/pods/bugs_subscriptions  \
+            peoplepods/pods/contact_form        \
+            peoplepods/pods/custom_img          \
+            peoplepods/pods/email_everyone      \
+            peoplepods/pods/facebook_connect    \
+            peoplepods/pods/file_monitor        \
+            peoplepods/pods/mime_send           \
+            peoplepods/pods/toggle_bot          \
+    ; do
+  if [ -L ${name} ]; then
+    rm ${name}
+  elif [ -d ${name} ]; then
+    if [ -d ${name}/.svn ]; then
+      echo "WARNING: ${name}/.svn exists, so not doing 'rm -rf'"
+    else
+      rm -rf ${name}
+    fi
+  else
+    rm -rf ${name}  # Really, this case is only for PeoplePods.php.
+  fi
+done
+
+# We could remove the peoplepods/ subdir too, now that it's uncrufted,
+# after checking (via svn) that nothing in it is modified.  But that
+# seems like going too far: it would take a long time to check out
+# again, and any problems are unlikely to be inside peoplepods/ anyway.

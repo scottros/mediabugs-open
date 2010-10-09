@@ -1,0 +1,66 @@
+#!/bin/sh
+
+PEOPLEPODS_RO=http
+PEOPLEPODS_RW=https
+PEOPLEPODS_SVN=peoplepods.googlecode.com/svn/trunk/
+
+# Check out the PeoplePods core code into 'peoplepods', unless it's
+# already present.  Note we could unconditionally check it out -- if
+# it were already here, it would just get updated.  But that's not a
+# very predictable behavior; better to have updates be manual.
+if [ ! -d peoplepods ]; then
+  if ! svn checkout ${PEOPLEPODS_RW}://${PEOPLEPODS_SVN} peoplepods; then
+    echo "Doing a read-only checkout of peoplepods:"
+    svn checkout ${PEOPLEPODS_RO}://${PEOPLEPODS_SVN} peoplepods
+  fi
+else
+    echo "'peoplepods' directory already present; not re-checking out"
+fi
+
+# The MediaBugs-specific pods all live here in pods/, but in a live
+# deployment they should be in peoplepods/pods/.  So we link them over.
+for P in `find pods -mindepth 1 -maxdepth 1 -type d -print | grep -v .svn`; do
+  if [ -e peoplepods/${P} ]; then
+    echo "peoplepods/${P} already exists"
+  else
+    # Two approaches: symlink, or copy (via 'svn export' to avoid .svn/).
+    # For now we default to the link method.  Note that if one does
+    # the copy method instead, then the links later on to PeoplePods.php
+    # and lib/ should not be necessary.
+    ln -s "../../${P}" peoplepods/${P}
+    # svn export ${P} peoplepods/${P}
+  fi
+done
+
+# Same with the theme.
+if [ -e peoplepods/themes/mediabugs ]; then
+  echo "peoplepods/themes/mediabugs already exists"
+else
+  ln -s "../../themes/mediabugs" peoplepods/themes/mediabugs
+  # svn export themes/mediabugs peoplepods/themes/mediabugs
+fi
+
+# Now a total kluge to get around the fact that we had to use symlinks
+# above instead of hard links (because they're directories).  The .php
+# files use the relative include paths "../../PeoplePods.php" and
+# "../../lib/Core.php".  But we used symlinks, those include paths
+# would be taken as relative to the link resolution, which fails.
+# The solution?  More symlinks to patch things over!  Yay.  Sigh.
+if [ -e PeoplePods.php ]; then
+  echo "PeoplePods.php already exists"
+else
+  ln -s peoplepods/PeoplePods.php PeoplePods.php
+fi
+if [ -e lib ]; then
+  echo "lib already exists"
+else
+  ln -s peoplepods/lib lib
+fi
+
+
+# Certain things need to be writeable by the web server.  777 is
+# probably overdoing it, however; this should be more sophisticated.
+touch .htaccess
+chmod 777 .htaccess
+chmod -R 777 peoplepods/files
+chmod 777 peoplepods/lib/etc
