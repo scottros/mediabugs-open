@@ -1,0 +1,140 @@
+                          MediaBugs.org Bug Tracker
+                          =========================
+
+This is the source distribution for the code that runs MediaBugs.org.
+Please report bugs at http://code.google.com/p/mediabugs-open/issues/.
+MediaBugs-open is based on the PeoplePods.net library developed by Ben
+Brown; see PeoplePods.net for more information.
+
+Installation Instructions:
+
+  1. Make sure these packages are installed.  These instructions are
+     based on Debian and Ubuntu GNU/Linux systems -- if you're on
+     something different, please adjust accordingly.  We assume you
+     have apache2 httpd already installed.
+
+     # apt-get update
+     # apt-get install php5       /* See troubleshooting note (1) below. */
+     # apt-get install php5-mysql  
+
+  2. Create the database:
+
+     # mysqld &                   /* Start up mysqld only if not running. */
+     # mysql -u root
+     mysql> create database mediabugs;
+     mysql> grant all on mediabugs.* to mediabugsrw@localhost
+            identified by 'changeme';
+     mysql> flush privileges;
+     mysql> quit
+     # 
+
+  3. Put the mediabugs-open directory wherever web pages are normally
+     served from: 
+
+     # cp -a mediabugs-open /var/www/mediabugs
+
+     (You could put it in "/var/www/whatever"; these instructions
+     assume "mediabugs".  And you could serve directly out of this
+     working copy, if you're doing development work on mediabugs.
+     E.g., 'ln -s /path/to/mediabugs-open /var/www/mediabugs'.)
+
+     # chown -R www-data.www-data /var/www/mediabugs
+
+     (For 'www-data', use whatever user.group your webserver runs as.)
+
+  4. Make sure apache2 is configured to allow .htaccess overrides.
+     Something like this in your httpd.conf or wherever:
+
+     <Directory /var/www/>
+         AllowOverride All
+         Order allow,deny
+         allow from all
+     </Directory>
+
+  5. Deploy!
+
+       $ cd /var/www/mediabugs
+       $ make deploy
+
+     Note that the first time you do this, it will pull down the
+     peoplepods library from http://code.google.com/p/peoplepods.
+
+  6. Browse to http://yourserver/mediabugs/peoplepods -- you're in!
+     The rest of the setup takes place via the web admin interface.
+
+     You will be prompted for the database info and for a few steps
+     after that.  ("/mediabugs/peoplepods" is the web admin area;
+     you'll use it a lot).
+
+  7. When you get to the "Plugin Pods" page during the setup, there
+     will be a long list of pods, with checkboxes on the right.  Only
+     a few will be already checked.  Make sure all of the following
+     are turned on (sorry, I don't know a way to avoid this laborious
+     task):
+
+       bugs_profiles
+       akismet
+       openid_connect
+       contact_form
+       bugs_reports
+       bugs_send_this
+       bugs_subscriptions
+       bugs_authentication_login
+       bugs_authentication_creation
+       bugs_cron
+       bugs_api
+       bugs_moderation
+       contenttype_bug_add
+       contenttype_bug_browse
+       contenttype_bug_feeds
+       contenttype_bug_bugfeeds
+       contenttype_bug_view
+       contenttype_bug_list
+       bugs_home
+       facebook_connect
+       email_everyone
+       twitter_connect
+       custom_img
+       bugs_features
+       bugs_lists
+       mime_send
+       core_pages
+       bugs_dashboard
+       toggle_bot
+
+     You should also turn OFF the following pods, which may still be
+     checked on by default:
+
+       core_dashboard
+       core_authentication_login
+       core_api_simple
+
+     (Often when things aren't behaving right, it's because the wrong
+     pod was somehow still accidentally enabled after this step.)
+
+  8. Set the theme.  Click "Options" in the left vertical
+     nav, then click "Activate" for the "MediaBugs Theme".
+
+  9. Set the API key.  Again go to "Options", and the API Key field is
+     on the "Site Options" tab.  Use this key...
+
+     287b8336ef3aa6360dfbe55ee4b1beab
+
+     ...or obtain one from PeoplePods.net.  See
+     http://code.google.com/p/peoplepods/issues/detail?id=1 for
+     discussion of whether this step will be required in the future.
+
+ 10. Create a new user named "Anonymous", starting from the "People"
+     link in the left-side vertical nav panel.  This user is necessary
+     for anonymous bug reporting to work properly.
+
+ 11. It's all set up.  Click "View Site" at the bottom of the left
+     vertical nav panel, and try "Report a bug".
+
+Troubleshooting notes:
+----------------------
+
+1) PHP will need the mbfl library enabled to provide 'mbstring'.  If
+   your packaged PHP doesn't have that by default, then try 'apt-get
+   install php5-mbstring', or else recompile PHP from source with the
+   --enable-mbfl flag, reinstall it, and don't forget to restart apache2.
