@@ -119,6 +119,7 @@
 					<a href="<? $POD->siteRoot(); ?>/pages/about">About</a>
 					<? 
 						$about = $POD->getContent(array('stub'=>'about'));
+						if ($about->success()) {
 						$links = $about->children();
 						$links->sortBy('weight',true);
 					?>
@@ -127,6 +128,7 @@
 							<li><a href="<?= $link->permalink; ?>"><?= $link->short_headline; ?></a></li>
 						<? } ?>
 					</ul>
+					<? } ?>
 				</li>
 				<li id="nav_help"><a href="<? $POD->siteRoot(); ?>/pages/help">Help</a></li>
 				<li id="nav_contact"><a href="<? $POD->siteRoot(); ?>/pages/contact">Contact</a></li>
