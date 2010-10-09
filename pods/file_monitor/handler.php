@@ -51,22 +51,22 @@
 					$report .= "{$dname} was created!\n\n";
 				} else {
 					if ($vals['size'] != $history[$name]['size']) { 
-						$report .= "{$dname} has changed size, from {$vals['size']} to {$history[$name]['size']}\n\n";
+						$report .= "{$dname} has changed size, to {$vals['size']} from {$history[$name]['size']}\n\n";
 					}
 					if ($vals['mod_time'] != $history[$name]['mod_time']) { 
-						$report .= "{$dname} modified time has changed, from {$vals['mod_time']} to {$history[$name]['mod_time']}\n\n";
+						$report .= "{$dname} modified time has changed, to {$vals['mod_time']} from {$history[$name]['mod_time']}\n\n";
 					}
 	//				if ($vals['status_time'] != $history[$name]['status_time']) { 
 	//					$report .= "{$dname} status time has changed, from {$vals['status_time']} to {$history[$name]['status_time']}\n\n";
 	//				}
 					if ($vals['group'] != $history[$name]['group']) { 
-						$report .= "{$dname} group setting has changed, from {$vals['group']} to {$history[$name]['group']}\n\n";
+						$report .= "{$dname} group setting has changed, to {$vals['group']} from {$history[$name]['group']}\n\n";
 					}
 					if ($vals['user'] != $history[$name]['user']) { 
-						$report .= "{$dname} has modified time has changed, from {$vals['user']} to {$history[$name]['user']}\n\n";
+						$report .= "{$dname} has modified time has changed, to {$vals['user']} from {$history[$name]['user']}\n\n";
 					}
 					if ($vals['permissions'] != $history[$name]['permissions']) { 
-						$report .= "{$dname} has modified time has changed, from {$vals['permissions']} to {$history[$name]['permissions']}\n\n";
+						$report .= "{$dname} has modified time has changed, to {$vals['permissions']} from {$history[$name]['permissions']}\n\n";
 					}			
 				}
 			
