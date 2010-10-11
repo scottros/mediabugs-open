@@ -42,10 +42,11 @@ Installation Instructions:
 
      (For 'www-data', use whatever user.group your webserver runs as.)
 
-  4. Make sure apache2 is configured to allow .htaccess overrides.
-     Something like this in your httpd.conf or wherever:
+  4. Configure apache2 to allow .htaccess overrides and to follow
+     symlinks.  Something like this in httpd.conf (or wherever):
 
      <Directory /var/www/>
+         Options FollowSymLinks
          AllowOverride All
          Order allow,deny
          allow from all
