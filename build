@@ -8,7 +8,9 @@ PEOPLEPODS_SVN=peoplepods.googlecode.com/svn/trunk/
 # already present.  Note we could unconditionally check it out -- if
 # it were already here, it would just get updated.  But that's not a
 # very predictable behavior; better to have updates be manual.
-if [ ! -d peoplepods ]; then
+if [ -d peoplepods ]; then
+    echo "'peoplepods' directory already present; not re-checking out"
+else
   if svn checkout ${PEOPLEPODS_RW}://${PEOPLEPODS_SVN} peoplepods; then
     echo "Checked out read/write copy of peoplepods."
   else
@@ -16,8 +18,6 @@ if [ ! -d peoplepods ]; then
     svn checkout ${PEOPLEPODS_RO}://${PEOPLEPODS_SVN} peoplepods
     echo "Checked out read-only copy of peoplepods."
   fi
-else
-    echo "'peoplepods' directory already present; not re-checking out"
 fi
 
 # The MediaBugs-specific pods all live here in pods/, but in a live
