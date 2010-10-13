@@ -22,16 +22,16 @@ fi
 
 # The MediaBugs-specific pods all live here in pods/, but in a live
 # deployment they should be in peoplepods/pods/.  So we link them over.
-for P in `find pods -mindepth 1 -maxdepth 1 -type d -print | grep -v .svn`; do
-  if [ -e peoplepods/${P} ]; then
-    echo "peoplepods/${P} already exists"
+for P in `/bin/ls -1 pods`; do
+  if [ -e peoplepods/pods/${P} ]; then
+    echo "peoplepods/pods/${P} already exists"
   else
     # Two approaches: symlink, or copy (via 'svn export' to avoid .svn/).
     # For now we default to the link method.  Note that if one does
     # the copy method instead, then the links later on to PeoplePods.php
     # and lib/ should not be necessary.
-    ln -s "../../${P}" peoplepods/${P}
-    # svn export ${P} peoplepods/${P}
+    ln -s "../../pods/${P}" peoplepods/pods/${P}
+    # svn export pods/${P} peoplepods/pods/${P}
   fi
 done
 
