@@ -1,10 +1,11 @@
 <div class="outlet_info">
 	<div class="column_3 outlet_logo">
 		<? if ($img = $doc->files()->contains('file_name','img')) { ?>
-				<p><img src="<?= $img->src(220); ?>" /></p>
+				<p><? if ($doc->link) {?><a href="<?= $doc->link; ?>"><? } ?><img src="<?= $img->src(220); ?>" border="0" alt="<?= $doc->htmlspecialchars('headline'); ?>"/><? if ($doc->link) {?></a><? } ?></p>
 		<? } else { ?>
 			<h3><?= $doc->headline; ?></h3>
 		<? } ?>
+		<? if ($doc->link) {?><p><a href="<?= $doc->link; ?>"><?= $doc->link; ?></a></p><? } ?>
 	</div>
 	<div class="column_2 outlet_bugcounts">
 			<p>

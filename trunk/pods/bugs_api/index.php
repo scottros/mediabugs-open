@@ -60,7 +60,7 @@
 	
 		if ($method=="tags") { 
 			$keyword = $_GET['q'];
-			$sql = "SELECT t.value FROM tags t inner join tagRef tr on t.id=tr.tagId INNER JOIN content c on tr.contentId=c.id WHERE c.type='bug_target' and value like '{$keyword}%' order by value asc;";
+			$sql = "SELECT distinct t.value FROM tags t inner join tagRef tr on t.id=tr.tagId INNER JOIN content c on tr.contentId=c.id WHERE c.type='bug_target' and value like '{$keyword}%' order by value asc;";
 			$res = mysql_query($sql,$POD->DATABASE);
 			while ($val = mysql_fetch_assoc($res)) { 
 				echo  $val['value'] . "\n";	

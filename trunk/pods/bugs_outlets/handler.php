@@ -18,7 +18,7 @@
 	
 	$POD->header('Media Outlets'); 
 
-	$outlets = $POD->getContents(array('type'=>'bug_target'),$sort,5,$offset);
+	$outlets = $POD->getContents(array('type'=>'bug_target'),$sort,25,$offset);
 	
 	$outlets->output('outlet.list','outlets.header','outlets.footer',null,null,"&sort=$sortp");	
 	
