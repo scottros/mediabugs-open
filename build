@@ -9,9 +9,12 @@ PEOPLEPODS_SVN=peoplepods.googlecode.com/svn/trunk/
 # it were already here, it would just get updated.  But that's not a
 # very predictable behavior; better to have updates be manual.
 if [ ! -d peoplepods ]; then
-  if ! svn checkout ${PEOPLEPODS_RW}://${PEOPLEPODS_SVN} peoplepods; then
+  if svn checkout ${PEOPLEPODS_RW}://${PEOPLEPODS_SVN} peoplepods; then
+    echo "Checked out read/write copy of peoplepods."
+  else
     echo "Doing a read-only checkout of peoplepods:"
     svn checkout ${PEOPLEPODS_RO}://${PEOPLEPODS_SVN} peoplepods
+    echo "Checked out read-only copy of peoplepods."
   fi
 else
     echo "'peoplepods' directory already present; not re-checking out"
