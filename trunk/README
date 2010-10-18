@@ -132,6 +132,21 @@ Installation Instructions:
  11. It's all set up.  Click "View Site" at the bottom of the left
      vertical nav panel, and try "Report a bug".
 
+ 12. You may wish to add content for the Help page, About page, etc.
+     Go to the admin area (http://yourserver/mediabugs/peoplepods).
+     Click on "Add Content" at the top, then choose type "Document".
+     On the resultant page, fill in the "Headline" and "Body" fields,
+     then over on the right, enter a relative URL into the 'stub' field.
+     The URLs are in the theme's .php files, so for MediaBugs you need:
+
+       help
+       about
+       contact
+       who
+       faq
+       tos
+       what-is-a-media-bug
+
 Troubleshooting notes:
 ----------------------
 
