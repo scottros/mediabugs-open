@@ -28,7 +28,7 @@
 				foreach ($_FILES as $filename=>$file) { 
 					$POD->currentUser()->addFile($filename,$file);
 					if (!$POD->currentUser()->success()) { 
-						$msg .= 'An error occured while attaching your file: ' . $content->error();
+						$msg .= 'An error occured while attaching your file: ' . $POD->currentUser()->error();
 					}
 				}
 				$POD->currentUser()->files()->fill();
