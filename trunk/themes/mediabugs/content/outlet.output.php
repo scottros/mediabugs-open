@@ -30,7 +30,7 @@
 			
 			<? if ($policy->corrections_link_note) { echo $policy->corrections_link_note; } ?>
 			
-			<p class="question">Corrections policy linked? <strong><?= $policy->corrections_policy; ?></strong></p>
+			<p class="question">Corrections policy posted? <strong><?= $policy->corrections_policy; ?></strong></p>
 			
 			<? if ($policy->corrections_policy_note) { echo $policy->corrections_policy_note; } ?>
 					
