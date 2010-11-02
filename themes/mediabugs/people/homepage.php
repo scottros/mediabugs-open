@@ -103,7 +103,7 @@
 	
 		<!-- this is where new posts from friends and groups show up -->
 			<? 
-					$interesting->output('short','header','footer','Bugs to watch','There\'s nothing new yet!'); 
+					$interesting->output('featured_bug','header','footer','Bugs to watch','There\'s nothing new yet!'); 
 			?>
 				
 	</div>

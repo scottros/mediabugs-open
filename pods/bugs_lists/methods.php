@@ -92,9 +92,13 @@ function bugTargetTags($POD,$count=9) {
 }
 
 
-function bugTargets($POD,$count=20,$offset=0) {
+function bugTargets($POD,$count=20,$offset=0,$conditions=null) {
 
-	return $POD->getContents(array('type'=>'bug_target','status'=>'approved'),'headline asc',$count,$offset);
+	$query = array('type'=>'bug_target','status'=>'approved');
+	if (isset($conditions)) { 
+		$query = array_merge($query,$conditions);
+	}
+	return $POD->getContents($query,'headline asc',$count,$offset);
 
 }
 

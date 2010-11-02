@@ -32,13 +32,15 @@
 	<script src="<? $POD->templateDir(); ?>/js/jquery-bt/jquery.bt.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/tinymce/jscripts/tiny_mce/jquery.tinymce.js"></script>
 	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/jcaption.min.js"></script>
+
 	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/jquery-datepick/jquery.datepick.js"></script>
 	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/jquery-datepick/jquery.datepick-validation.js"></script>
 
 
 	<link rel="stylesheet" type="text/css" href="<? $POD->templateDir(); ?>/js/jquery-autocomplete/jquery.autocomplete.css" media="screen" charset="utf-8" />
 	<link rel="stylesheet" type="text/css" href="<? $POD->templateDir(); ?>/js/jquery-datepick/flora.datepick.css" media="screen" charset="utf-8" />
-	<link rel="stylesheet" type="text/css" href="<? $POD->templateDir(); ?>/styles.css?v=20100609" media="screen" charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="<? $POD->templateDir(); ?>/styles.css" media="screen" charset="utf-8" />
 	
 	<? if ($feedurl) { ?>
 		<link rel="alternate" type="application/rss+xml" title="RSS: <? if ($pagetitle) { echo $pagetitle . " - " . $POD->siteName(false); } else { echo $POD->siteName(false); } ?>" href="<? echo $feedurl; ?>" />
@@ -51,7 +53,7 @@
 		var API = siteRoot + "/api";		
 	</script>
 	
-	<script type="text/javascript" src="<? $POD->templateDir(); ?>/javascript.js?v=20090828"></script>
+	<script type="text/javascript" src="<? $POD->templateDir(); ?>/javascript.js"></script>
 
 	
 </head>
@@ -111,7 +113,60 @@
 			<ul>
 				<li id="nav_home"><a href="<? $POD->siteRoot(); ?>">Home</a></li>
 				<li id="nav_report"><a href="<? $POD->siteRoot(); ?>/bugs/edit">Report a bug</a></li>
-				<li id="nav_browse"><a href="<? $POD->siteRoot(); ?>/bugs">Browse bugs</a></li>
+				<li id="nav_browse">
+					<a href="<? $POD->siteRoot(); ?>/bugs">Browse bugs</a>
+					<div id="floating_browse_nav">
+							<div class="col">	
+								<ul>
+
+									<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/outlet">Browse by Media Outlet</a>
+									<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/date">Browse by Date</a>
+									</li>
+									<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/date?sort=modification">Browse by Recent Activity</a></li>
+									<li>
+										<a href="<? $POD->siteRoot(); ?>/bugs/browse/type">Browse by Type</a>
+										<ul>
+											<? foreach ($bug_types as $type) { ?>
+												<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/type?q=<?= $type->headline; ?>"><?= $type->headline; ?></a></li>
+											<? } ?>
+										</ul>
+										<div class="clearer"></div>
+									</li>
+								</ul>
+							</div>
+							<div class="col">	
+								<ul>
+									<li>
+										<a href="<? $POD->siteRoot(); ?>/bugs/browse/status">Browse by Status</a>
+										<ul>
+											<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/status?q=open"><img src="<? $POD->templateDir(); ?>/img/status_icons/open_20.png" align="absmiddle" alt="Open" border="0">&nbsp;Open</a></li>
+											<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/status?q=open:under discussion"><img src="<? $POD->templateDir(); ?>/img/status_icons/open_under_discussion_20.png" align="absmiddle" alt="Open: Under Discussion" border="0">&nbsp;Open: Under Discussion</a></li>
+											<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/status?q=open:responded to"><img src="<? $POD->templateDir(); ?>/img/status_icons/open_responded_to_20.png" align="absmiddle" alt="Open: Responded to" border="0">&nbsp;Open: Responded to</a></li>
+											<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/status?q=closed:corrected"><img src="<? $POD->templateDir(); ?>/img/status_icons/closed_corrected_20.png" align="absmiddle"  alt="Closed: Corrected" border="0">&nbsp;Closed: Corrected</a></li>
+											<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/status?q=closed:withdrawn"><img src="<? $POD->templateDir(); ?>/img/status_icons/closed_withdrawn_20.png" align="absmiddle" alt="Closed: Withdrawn" border="0">&nbsp;Closed: Withdrawn</a></li>
+											<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/status?q=closed:unresolved"><img src="<? $POD->templateDir(); ?>/img/status_icons/closed_unresolved_20.png" align="absmiddle" alt="Closed: Unresolved" border="0">&nbsp;Closed: Unresolved</a></li>
+											<li><a href="<? $POD->siteRoot(); ?>/bugs/browse/status?q=closed:off topic"><img src="<? $POD->templateDir(); ?>/img/status_icons/closed_off_topic_20.png" align="absmiddle" alt="Closed: Off Topic" border="0">&nbsp;Off Topic</a></li>
+											<div class="clearer"></div>
+											<li><a href="<? $POD->siteRoot(); ?>/pages/status-explanation">What do these mean?</a></li>
+										</ul>	
+										<div class="clearer"></div>
+									</li>
+								</ul>
+							</div>
+							<div class="map">
+								<ul>
+	
+									<li>
+										<a href="<? $POD->siteRoot(); ?>/bugs/browse/tag">Browse by Region</a>
+										<? $POD->output('regionmap_400'); ?>            
+										<div class="clearer"></div>	
+									</li>
+								</ul>
+							
+							</div>
+							<div class="clearer"></div>
+					</div>	
+				</li>
 				<? if ($POD->isAuthenticated()) { ?>
 					<li id="nav_my"><a href="<? $POD->siteRoot(); ?>/dashboard">My bugs</a></li>
 				<? } ?>

@@ -16,8 +16,17 @@
 
 	$().ready( function() { 
 	
-	
-	
+		$('#nav_browse area').mouseover(function(e) { 
+			$('#nav_browse').addClass('mapping');
+		});	
+
+		$('#nav_browse area').mouseout(function(e) { 
+			$('#nav_browse').removeClass('mapping');
+		});			
+		
+		
+		$('#post_output img').jcaption({copyStyle:true,copyFloatToClass:false});
+		
 		url = window.location.pathname;
 		var tab = 'home';
 		if (url.indexOf('bugs/edit') > -1) {
@@ -571,12 +580,12 @@
 		
 		function toggleCorrections(obj) { 
 		
-				if ($('.outlet_info .policy').is(":visible")) { 
-					$('.outlet_info .policy').hide();
+				if ($(obj).parent().parent().parent().children('.policy').is(":visible")) { 
+					$(obj).parent().parent().parent().children('.policy').hide();
 					$(obj).html('&#x25BA; View corrections policies and procedures');
 					$(obj).parent().parent().removeClass('activeTab');
 				} else {		
-					$('.outlet_info .policy').show();
+					$(obj).parent().parent().parent().children('.policy').show();
 					$(obj).html('&#x25BD; Hide corrections policies');
 					$(obj).parent().parent().addClass('activeTab');
 
