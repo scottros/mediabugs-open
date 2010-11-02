@@ -80,9 +80,27 @@
 	#nav ul li.active a { display: block; background: #FFF;  font-weight: bold; font-size: 14px; } 
 
 
-	#nav ul li ul { display: none; background: #b6daae;}
-	#nav ul li ul li { display: block; float: none; margin:0px; }
-	#nav ul li:hover ul { width:150px; display: block; position: absolute; z-index:5; top: 35px; left: 0px; border:1px solid #ccc; border-top:0px;  -moz-box-shadow: rgba(0,0,0,0.5) 0px 10px 10px; -webkit-box-shadow:  rgba(0,0,0,0.5) 0px 10px 10px; }
+	#nav ul li#nav_about ul { display: none; background: #b6daae;}
+	#nav ul li#nav_about ul li { display: block; float: none; margin:0px; }
+	#nav ul li#nav_about:hover ul { width:150px; display: block; position: absolute; z-index:5; top: 35px; left: 0px; border:1px solid #ccc; border-top:0px;  -moz-box-shadow: rgba(0,0,0,0.5) 0px 10px 10px; -webkit-box-shadow:  rgba(0,0,0,0.5) 0px 10px 10px; }
+
+
+	#nav ul li#nav_browse div#floating_browse_nav { display: none; position: absolute; z-index:5; top: 35px; left: -184px; width: 940px; padding:10px; background: #FFF; border:1px solid #CCC; border-top:0px; -moz-box-shadow: rgba(0,0,0,0.5) 0px 10px 10px; -webkit-box-shadow:  rgba(0,0,0,0.5) 0px 10px 10px;} 
+	#nav ul li#nav_browse:hover div#floating_browse_nav { display: block; }
+	#nav ul li#nav_browse.mapping div#floating_browse_nav { display: block; }
+
+	#nav ul li#nav_browse div#floating_browse_nav ul { display: block; background: transparent;}
+	#nav ul li#nav_browse div#floating_browse_nav ul li a { font-weight: bold; padding:3px; }
+	#nav ul li#nav_browse div#floating_browse_nav ul li  { margin-bottom:10px; }
+
+	#nav ul li#nav_browse div#floating_browse_nav ul li a { font-weight: bold; padding:3px; }
+	#nav ul li#nav_browse div#floating_browse_nav ul li ul { display: block; }
+	#nav ul li#nav_browse div#floating_browse_nav ul li ul li { margin-bottom:0px; }
+
+	#nav ul li#nav_browse div#floating_browse_nav ul li ul li a { font-weight: normal; padding:3px; }
+
+	#floating_browse_nav .col { width: 250px; margin:10px; float: left; }
+	#floating_browse_nav .map { width: 400px; float: left; margin-top:10px;}
 
 	#nav form { margin: 0px; margin-left:10px;}  
 	#nav form input.repairField { padding:5px; width: 150px;  margin-right:20px; float: left; }  
@@ -476,12 +494,12 @@ ul#tag_list li { display: block; padding: 3px; margin:2px; float: left; backgrou
 
 
 
-.outlet_info { margin-bottom:20px; border-top:1px solid #CCC; border-bottom:1px solid #CCC; padding-top:15px; padding-bottom:10px; } 
+.outlet_info { margin-bottom:20px;  border-bottom:1px solid #CCC; padding-top:15px; padding-bottom:10px; } 
 .outlet_info p { margin-top:0px; }
 .outlet_info .outlet_bugcounts p { margin-left:10px; margin-right:10px; font-weight:bold;} 
 .outlet_info .outlet_corrections {}
-.outlet_info .activeTab { background: #F0F0F0; -moz-border-radius-topleft: 12px; -moz-border-radius-topright: 12px; -webkit-border-top-right-radius: 12px; -webkit-border-top-left-radius:12px;}
-.outlet_info .policy { margin-top:-1px; padding:20px; background: #F0F0F0; -moz-border-radius-bottomleft: 12px; -moz-border-radius-bottomright: 12px; -moz-border-radius-topleft: 12px;  -webkit-border-bottom-left-radius: 12px; -webkit-border-bottom-right-radius: 12px; -webkit-border-top-left-radius: 12px;}
+.outlet_info .activeTab { }
+.outlet_info .policy { margin-top:-1px; padding:20px; background: #F0F0F0; -moz-border-radius: 12px; -webkit-border-radius:12px;}
 .outlet_info .policy strong { text-transform: capitalize; }
 .outlet_info .activeTab p { padding:10px; } 
 .outlet_info .policy p { margin-left:15px; } 
@@ -496,3 +514,8 @@ ul#tag_list li { display: block; padding: 3px; margin:2px; float: left; backgrou
 .stack_features div.feature_archive h3 { margin-bottom:0px; } 
 .stack_features div.feature_archive p {  margin-top:0px; }
 .stack_features div.feature_archive p.byline { font-style: italic; margin-bottom:5px; }
+
+h1#browse_crumbs { font-size: 16px; }
+
+ul#alpha_index { list-style-type: none; margin:0px; padding:0px; }
+ul#alpha_index li { display: inline; font-weight: bold; }
