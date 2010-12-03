@@ -140,6 +140,17 @@ function bugSummary($bug) {
 
 }
 
+
+function target($bug) { 
+
+	if ($bug->bug_target) { 
+		return $bug->POD->getContent(array('id'=>$bug->bug_target));
+	} else {
+		return null;
+	}
+
+}
+
 function bugTargetBrowseLink($outlet) { 
 
 	return "<a href=\"" . $outlet->POD->siteRoot(false) . "/bugs/browse/outlet?q={$outlet->id}\">{$outlet->headline}</a>";
@@ -171,6 +182,7 @@ Content::registerMethod('bugHeadline');
 Content::registerMethod('bugSummary');
 Content::registerMethod('bugIsOpen');
 Content::registerMethod('bugIsClosed');
+Content::registerMethod('target');
 
 Tag::registerMethod('bugTargetTagBrowseLink');
 

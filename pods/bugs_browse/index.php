@@ -45,7 +45,7 @@
 			<?
 			$p = '';
 			if (@$_GET['a'] && strlen($_GET['a'])==1) { 
-				$targets = $POD->bugTargets(10,$offset,array('headline:like'=>$_GET['a']. "%"));
+				$targets = $POD->bugTargets(10,$offset,array('or'=>array('d.headline:like'=>'the '.$_GET['a']. "%",'headline:like'=>$_GET['a']. "%")));
 				$p = '&a='.$_GET['a'];
 				$crumbs[] = strtoupper($_GET['a']);
 			} else {					

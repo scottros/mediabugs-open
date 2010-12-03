@@ -58,9 +58,10 @@
 	$OLD_BUGS = $POD->getContents(array('type'=>'bug','date:lte'=>date('Y-m-d',strtotime('-60 days')),'bug_status:like'=>'open%'),null,100);
 	$OLD_BUGS->fill();
 	foreach ($OLD_BUGS as $bug) { 
-	
+		
+		$bug->changeBugStatus('closed:unresolved');
+
 		if ($bug->author()->id!=$POD->anonymousAccount()) { 
-			$bug->changeBugStatus('closed:unresolved');
 			$bug->author()->sendEmail('bug_closed',array('document'=>$bug));	
 			echo "sending an email to " . $bug->author()->nick . " about bug " . $bug->headline . "<Br />";
 		}

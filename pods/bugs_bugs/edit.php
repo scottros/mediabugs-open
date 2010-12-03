@@ -203,6 +203,10 @@
 				}
 				$content->files()->fill();
 	
+				if ($is_new) { 
+					$content->moderatorAlert('New MediaBugs bug report: ' . $content->headline);
+				}
+	
 			} else {
 				$msg = "Error! " . $content->error();
 			}

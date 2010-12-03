@@ -519,3 +519,7 @@ h1#browse_crumbs { font-size: 16px; }
 
 ul#alpha_index { list-style-type: none; margin:0px; padding:0px; }
 ul#alpha_index li { display: inline; font-weight: bold; }
+
+/* Automatically inserted photo captions */
+
+.caption p { font-style: italic; }
