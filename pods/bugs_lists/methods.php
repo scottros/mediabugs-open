@@ -78,9 +78,11 @@ function changeBugStatus($bug,$status) {
 
 	error_log("CHANGING BUG STATUS TO {$status} FOR BUG #" . $bug->id);
 
-	$bug->bug_status = $status;
-	$comment = $bug->addComment('Status Changed: ' . ucfirst(preg_replace("/:/",": ",$status)),'status');
-	$comment->status = $status;
+	if ($bug->bug_status != $status) { 
+		$bug->bug_status = $status;
+		$comment = $bug->addComment('Status Changed: ' . ucfirst(preg_replace("/:/",": ",$status)),'status');
+		$comment->status = $status;
+	}
 	
 }
 

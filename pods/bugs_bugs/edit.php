@@ -124,26 +124,36 @@
 					$subscription->save();
 				}
 	
-	
+
 				// if the bug status has changed, add to the bug history.
 				$bug_status = $_POST['meta_bug_status'] ? $_POST['meta_bug_status'] : 'open';
 				if ($content->bug_status != $bug_status) { 
 					$content->changeBugStatus($bug_status);
+	/*
+removed 12/10/2010
+this is now handled by an AJAX powered popup on the bug page.
 					
 					if (preg_match('/closed/i',$bug_status) && $POD->isAuthenticated() && $POD->currentUser()->adminUser && $_POST['sendSurveyEmail']) {
 						if ($content->author()->id != $POD->anonymousAccount()) {  			
 							$content->author()->sendEmail('bug_closed_by_admin',array('document'=>$content));
 						}
 					}
+	
+*/	
 					
 				}			
-	
+
+	/*
+removed 12/10/2010
+this is now handled by an AJAX powered popup on the bug page.
+			
 	
 				// if a response has been posted, change status to responded to
 				if ($_POST['meta_media_outlet_response'] && !$content->media_outlet_response) { 
 					$content->changeBugStatus('open:responded to');			
 				}
-	
+*/
+
 	
 				// now we'll add any meta fields that have been passed in.
 				// we do this by looking for anything with a field name starting with meta_

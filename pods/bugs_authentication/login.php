@@ -17,7 +17,7 @@
 
 	$redirect_after_login = false;
 	$msg = null;
-	
+	$claimed = false;
 	// repair damage to redirect url
 	if ($_GET['checklogin']) { 
 	
@@ -49,7 +49,41 @@
 					if ($_POST['remember_me']) { 
 						$days = 100;
 					}
-			
+					
+					$USER = $POD->currentUser();
+
+					if ($_COOKIE['claim']) { 
+						$POD->changeActor(array('nick'=>'admin'));
+						$claim = $POD->getContent(array('id'=>$_COOKIE['claim']));
+						if ($claim->success()) { 
+							if ($claim->author()->id == $POD->anonymousAccount()) { 
+								
+								$claim->set('userId',$USER->id);
+								$claim->save();
+								if($claim->success()) { 	
+								
+									$claimed = $claim->id;
+										
+									// we also need to reset the first status comment!
+									$comments = $POD->getComments(array('contentId'=>$claim->id,'type'=>'status'),'date asc');
+									while ($comment = $comments->getNext()) { 
+										if ($comment->userId==$POD->anonymousAccount()) { 
+											$comment->userId = $USER->id;
+											$comment->save();
+										}
+									}
+									
+									
+									$USER->addWatch($claim);
+								} else {
+								}
+							} else {
+							}
+						}
+						$POD->changeActor(array('id'=>$USER->id));
+					}
+		
+					setcookie('claim','',time(),"/");
 					setcookie('pp_auth',$POD->currentUser()->get('authSecret'),time()+(86400 * $days),"/");
 					$redirect_after_login = true;
 			}
@@ -60,14 +94,19 @@
 	
 	if ($redirect_after_login) {
 		// if we logged in correctly, we redirect to the homepage of the site, or to any url passed in as a parameter	
+
 		if ($_POST['redirect']) { 
-		 	header("Location: " . $_POST['redirect']);
+			$redirect = $_POST['redirect'];
 		} else if ($_GET['redirect']) {
-			header("Location: " . $_GET['redirect']);
+			$redirect = $_GET['redirect'];
 		} else {
-			header("Location: " . $POD->siteRoot(false));
+			$redirect = $POD->siteRoot(false);
 		}
-	
+		if (!($claimed===false)) { 
+			$redirect .= "?claimed=" . $claimed;
+		}
+
+		header("Location: {$redirect}");	
 	} else {
 		$POD->header("Login");
 		if ($msg) { ?>

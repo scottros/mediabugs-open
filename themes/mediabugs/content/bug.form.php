@@ -52,9 +52,11 @@ if (!$doc->saved() || $POD->currentUser()->adminUser || (time() - strtotime($doc
 	<li id="tab_why">
 		<a href="#" onclick="return tabClick('why');">Supporting Info</a>
 	</li>
+<!--
 	<li id="tab_status">
 		<a href="#" onclick="return tabClick('status');">Status</a>
 	</li>
+-->
 	<? } else if ($doc->bugIsOpen()) { ?>
 		<li id="tab_edit" class="active">
 			Edit Bug
@@ -174,7 +176,10 @@ if (!$doc->saved() || $POD->currentUser()->adminUser || (time() - strtotime($doc
 						</script>
 					</p>
 	
-					<p class="input nextbutton"><a href="#why" class="littlebutton" onclick="return nextSection('what','why');">Next</a></p>
+					<p class="input nextbutton"><a href="#why" class="littlebutton" onclick="return nextSection('what','why');">Continue</a> <span>to attach files or other supporting evidence.</span></p>
+					<div class="clearer bottom_20"></div>
+					<p class="input nextbutton">.<input type="submit" class="button" value="Save Bug" /> <span>if you're done.</span></p>
+
 				</fieldset>
 	
 				<a name="why"></a>
@@ -211,74 +216,32 @@ if (!$doc->saved() || $POD->currentUser()->adminUser || (time() - strtotime($doc
 						<label for="file2">&nbsp;</label>
 						<a href="#" onclick="return addFile()";>Add Another File</a>
 					</p>
-	
-					<p class="input nextbutton"><a href="#status" class="littlebutton" onclick="return nextSection('why','status');">Next</a></p>
-	
-	
+
+					<p class="input" id="save_button"><input type="submit" class="button" value="Save Bug" /></p>
+
 				</fieldset>
+			
+				<? $current_status = $doc->bug_status ? $doc->bug_status : 'open'; ?>
+				<input type="hidden" name="meta_bug_status" value="<?= $current_status; ?>" />
+
+			<? } else { ?>
+				<p>
+					This bug is no longer editable.  
+				
+					However, there are several ways you can add information to this bug report!
+				</p>
+				
+				<p>
+					Update the bug's status, or add information about the media outlet's response by clicking
+					the edit link at the top of the bug page.
+				</p>
+				
+				<p>
+					Add other information by leaving comments.
+				</p>
+					
+			
 			<? } ?>
-
-			<a name="status"></a>
-			<fieldset id="status" style="display: none;">
-				<legend>Bug Status</legend>
-
-				<? if (!$doc->saved()) { 
-					$instructions_status->output('interface_text');
-				} else { 				
-					$instructions_edit->output('interface_text');
-				} ?>
-				
-				<? if ($doc->saved()) { ?>
-					<p class="input">
-						<label for="bug_status">Status:</label>
-						<? $current_status = $doc->bug_status ? $doc->bug_status : 'open'; 
-							if (!$POD->currentUser()->adminUser && preg_match("/closed/",$current_status)) { 
-								echo ucwords(preg_replace("/\:/",": ",$current_status));
-								?>
-								<input type="hidden" name="meta_bug_status" value="<?= $current_status; ?>" />
-								
-							<? } else { ?>				
-								<select name="meta_bug_status">
-									<option value="<?= $current_status ?>"><?= ucwords(preg_replace("/\:/",": ",$current_status)); ?></option>
-									<option value="closed:corrected" <? if ($doc->bug_status=='closed:corrected') {?>selected<? } ?>>Closed: Corrected</option>
-									<option value="closed:withdrawn" <? if ($doc->bug_status=='closed:withdrawn') {?>selected<? } ?>>Closed: Withdrawn</option>
-									<? if ($POD->currentUser()->adminUser) { ?>
-										<option value="closed:off topic" <? if ($doc->bug_status=='closed:off topic') {?>selected<? } ?>>Off Topic</option>
-										<option value="closed:unresolved" <? if ($doc->bug_status=='closed:unresolved') {?>selected<? } ?>>Unresolved</option>						
-										<option value="open" <? if ($doc->bug_status=='open') {?>selected<? } ?>>Open</option>						
-										<option value="open:responded to" <? if ($doc->bug_status=='open:responded to') {?>selected<? } ?>>Open: Responded to</option>						
-										<option value="open:under discussion" <? if ($doc->bug_status=='open:under discussion') {?>selected<? } ?>>Open: Under Discussion</option>						
-									<? } ?>
-								</select>&nbsp;&nbsp;<a href="/pages/status-explanation" target="_new">What do these mean?</a>
-							<? } ?>				
-					</p>
-					
-					<? if ($POD->currentUser()->adminUser) { ?>
-						<p class="input"><input type="checkbox" name="sendSurveyEmail" checked /> Send survey reminder email to <? $doc->author()->write('nick'); ?> if I close this bug?</p>
-					<? } ?>
-					
-				<? } ?>
-			
-				<p class="input">
-					<label for="">Have you contacted this media outlet?</label>
-					<input type="radio" name="meta_media_outlet_contacted" value="yes" id="contacted_yes" onchange="chcontact();" <? if ($doc->media_outlet_contacted=="yes") {?>checked<? } ?>> Yes
-					<input type="radio" name="meta_media_outlet_contacted" value="no" id="contacted_no" onchange="chcontact();"<? if ($doc->media_outlet_contacted=="no" || !$doc->saved()) {?>checked<? } ?>> No
-				</p>
-				
-				<p class="input" id="media_response" <? if (!$doc->saved() || $doc->media_outlet_response=='') { ?>style="display:none;"<? }?>>
-					<label for="">What was the media outlet's response?</label>
-					<textarea name="meta_media_outlet_response" class="text tinymce"><? $doc->htmlspecialwrite('media_outlet_response'); ?></textarea>
-				</p>
-			
-				<p class="input" id="save_button"><input type="submit" class="button" value="Save Bug" /></p>
-				<div id="saving_progress" style="display: none;">
-					<strong>Saving...</strong>
-					<br />
-					<img src="<? $POD->templateDir(); ?>/img/ajax-loader.gif" align="absmiddle" />
-				</div>
-
-			</fieldset>
-			
 		<? } else { // if is open, else is closed ?>
 		
 			<fieldset id="survey">
@@ -329,8 +292,12 @@ if (!$doc->saved() || $POD->currentUser()->adminUser || (time() - strtotime($doc
 			
 			</fieldset>
 		<? } // if is closed ?>
-
-	</form>
+					<div id="saving_progress" style="display: none;">
+						<strong>Saving...</strong>
+						<br />
+						<img src="<? $POD->templateDir(); ?>/img/ajax-loader.gif" align="absmiddle" />
+					</div>
+		</form>
 
 </div>
 
@@ -344,31 +311,6 @@ if (!$doc->saved() || $POD->currentUser()->adminUser || (time() - strtotime($doc
 
 
 <script>
-
-	function chcontact() { 
-		if ($('#contacted_yes').attr('checked')) { 
-			$('#media_response').show();
-		} else {
-			$('#media_response').hide();	
-		}
-		return false;
-	}
-
-	function mo_outletupdate(json) {
-	
-		if (json.id) {
-			$('#media_outlet_id').val(json.id);
-		//	$('#media_outlet_new').hide();
-		} else {
-			$('#media_outlet_id').val('');
-		//	$('#media_outlet_new').show();		
-		}
-	
-	}
-	function mo_newcheck() { 
-		var val = $('#media_outlet_q').val();
-		$.getJSON('/api?method=bugtargetcheck&outlet='+escape(val),mo_outletupdate);
-	}
 
 	$().ready(function() { 
 	
