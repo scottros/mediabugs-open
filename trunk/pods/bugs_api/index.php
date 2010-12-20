@@ -19,7 +19,87 @@
 	
 		$POD->tolog("API CALL METHOD: $method");
 	
-	
+		
+		if ($method=="updateBugStatus") { 
+			
+			$id = $_GET['bug'];
+			$bug = $POD->getContent(array('id'=>$id));
+			$bug_status = $_GET['bug_status'];
+			$contacted = $_GET['contacted'];
+			$response = $_GET['response'];
+			$responded = $_GET['responded'];
+			if ($bug->success() && ($bug->isEditable() || ($bug->id == $_COOKIE['claim']))) {
+
+				if (!$POD->isAuthenticated() && $bug->id == $_COOKIE['claim']) { 
+					$POD->changeActor(array('id'=>$POD->anonymousAccount()));
+				}
+				if ($bug->bug_status!=$bug_status) {
+				
+					if ($bug_status=='reopen') {
+			
+						$status = $POD->getComments(array('type'=>'status','contentId'=>$bug->id,'status:like'=>'open%'),'date desc',1);
+						if ($status->count()<1) { 
+							$bug_status = 'open';
+						} else {
+							$bug_status = $status->getNext()->status;
+						}
+					}
+					
+					$bug->changeBugStatus($bug_status);
+						
+					if (preg_match('/closed/i',$bug_status) && $POD->isAuthenticated() && $POD->currentUser()->adminUser && $_GET['survey']=='true') {
+						if ($bug->author()->id != $POD->anonymousAccount()) {  			
+							$bug->author()->sendEmail('bug_closed_by_admin',array('document'=>$bug));
+						}
+					}
+
+				}
+
+				$bug->media_outlet_contacted = $contacted;
+				$bug->media_outlet_responded = $responded;
+
+				if ($response != $bug->media_outlet_response) {
+					// the response has been changed. 
+					$bug->media_outlet_response = $response;
+					if ($response != '') {
+						// this bug is now responded to
+						if (!preg_match('/closed/i',$bug_status)) {
+							$bug->changeBugStatus('open:responded to');
+							$bug_status='open:responded to';
+						}
+					}
+				}
+				if ($bug->media_outlet_responded=='no') { 
+					$bug->media_outlet_response = null;
+				}					
+
+				
+					
+				$data['status'] = 'OK';
+				$data['bug_status'] = $bug_status;
+				if (preg_match('/open/i',$bug_status)) { 
+					$data['open'] = true;
+				} else {
+					$data['open'] = false;
+				}
+				$data['display_status'] = ucwords(preg_replace("/\:/",": ",$bug_status));
+				$data['icon_20'] = $POD->templateDir(false) .'/img/status_icons/' . $POD->tokenize($bug_status) . "_20.png";
+				$data['icon_50'] = $POD->templateDir(false) .'/img/status_icons/' . $POD->tokenize($bug_status) . "_50.png";
+				$data['media_outlet_response'] = $bug->media_outlet_response;
+				$data['media_outlet_contacted'] = $bug->media_outlet_contacted;
+				$data['bug'] = $bug->id;
+				if ($POD->isAuthenticated()) { 
+					$data['surveyed'] = $bug->surveyed;
+				} else {
+					$data['surveyed'] = true;
+				}
+				echo json_encode($data);				
+			
+			} else {
+				echo json_encode(array('status'=>'error','error'=>'You cannot edit this bug'));
+			}	
+		
+		}
 	
 	
 		if ($method=="resortFeatures") { 

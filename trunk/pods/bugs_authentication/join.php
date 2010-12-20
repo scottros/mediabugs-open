@@ -51,12 +51,14 @@
 								$claimed = $claim->id;
 									
 								// we also need to reset the first status comment!
-								$comment = $POD->getComments(array('contentId'=>$claim->id,'type'=>'status'),'date asc',1);
-								if ($comment = $comment->getNext()) { 
-								
-									$comment->userId = $NEWUSER->id;
-									$comment->save();
-								}
+									$comments = $POD->getComments(array('contentId'=>$claim->id,'type'=>'status'),'date asc');
+									while ($comment = $comments->getNext()) { 
+										if ($comment->userId==$POD->anonymousAccount()) { 
+											$comment->userId = $NEWUSER->id;
+											$comment->save();
+										}
+									}
+
 								
 								
 								$NEWUSER->addWatch($claim);

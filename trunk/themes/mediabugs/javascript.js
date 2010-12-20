@@ -1,17 +1,18 @@
-		var WATCH_ON;
-		var WATCH_OFF;
-		var WATCH_LINK;
-		var FLAG_ON;
-		var FLAG_OFF;
-		var FLAG_LINK;
-		var FLAG_COUNTER;
-		var FLAG_SINGULAR;
-		var FLAG_PLURAL;
-		var SUB_ON;
-		var SUB_OFF;
-		var SUB_LINK;
-		var FILE_COUNTER = 1;
+	var WATCH_ON;
+	var WATCH_OFF;
+	var WATCH_LINK;
+	var FLAG_ON;
+	var FLAG_OFF;
+	var FLAG_LINK;
+	var FLAG_COUNTER;
+	var FLAG_SINGULAR;
+	var FLAG_PLURAL;
+	var SUB_ON;
+	var SUB_OFF;
+	var SUB_LINK;
+	var FILE_COUNTER = 1;
 
+	var new_bug_mode = false;
 
 
 	$().ready( function() { 
@@ -592,3 +593,137 @@
 				}
 			return false;
 		}
+
+
+
+		function changeBugStatus(bugId) {
+		
+			tinyMCE.triggerSave();
+
+			var new_status = $('input:radio[name=new_bug_status]:checked').val();
+			var media_outlet_contacted = $('input:radio[name=meta_media_outlet_contacted]:checked').val();
+			var media_outlet_response = $('#meta_media_outlet_response').val();
+			var media_outlet_responded = $('input:radio[name=meta_media_outlet_responded]:checked').val();
+			var send_survey = $('#sendSurveyEmail').is(':checked');
+			$.getJSON(
+				'/api?method=updateBugStatus&bug=' + encodeURIComponent(bugId) + "&bug_status="+encodeURIComponent(new_status)+"&response="+encodeURIComponent(media_outlet_response)+"&contacted="+encodeURIComponent(media_outlet_contacted) + "&responded="+encodeURIComponent(media_outlet_responded)+"&survey="+encodeURIComponent(send_survey),
+				function(json) { 
+					if (json.status=='OK') {
+						if (json.open) {
+							$('#status_open').show();
+							$('#status_closed').hide();
+							$('#bug_status_open').attr('checked',true);
+							$('#bug_status_open').val(json.bug_status);
+							$('#bug_status_open_img').attr('src',json.icon_20);
+							$('#bug_status_open_label').html(json.display_status);
+							$('#comment_form').show();
+						} else {
+							$('#status_closed').show();
+							$('#status_open').hide();
+							$('#bug_status_closed').val(json.bug_status);
+							$('#bug_status_closed').attr('checked',true);
+							$('#bug_status_closed_img').attr('src',json.icon_20);
+							$('#bug_status_closed_label').html(json.display_status);
+							$('#comment_form').hide();
+							if (!json.surveyed) { 
+								window.location=siteRoot+'/bugs/edit?id='+json.bug;			
+							}
+						}
+						$('#bug_status_icon').attr('src',json.icon_50);
+						if (json.media_outlet_contacted=='yes') { 
+							$('#media_outlet_contacted_yes').show();
+							$('#media_outlet_contacted_no').hide();
+
+						} else {
+							$('#media_outlet_contacted_yes').hide();
+							$('#media_outlet_contacted_no').show();
+
+						}
+						if (json.media_outlet_response) { 
+							$('#did_media_outlet_respond').show();
+						} else {	
+							$('#did_media_outlet_respond').hide();
+						}
+
+						$('#media_outlet_response').html(json.media_outlet_response);
+
+					} else {
+						alert(json.error);
+					}	
+					hideStatusChange();				
+				}
+			)
+			
+			return false;
+		}
+		
+		function hideStatusChange() { 
+			$('#change_bug_status').hide();
+			
+			if ($('#bug_status_link').html()) { 
+			$('#bug_status_link').bt({positions:['bottom','right'],
+			  fill: 'rgba(51, 204, 0, .8)',
+			   shadow: true,
+			    shadowOffsetX: 3,
+			    shadowOffsetY: 3,
+			    shadowBlur: 8,
+			    shadowColor: 'rgba(0,0,0,.6)',
+			    shadowOverlap: false,	
+			    padding:10,
+				 cssStyles: {color: '#FFF', fontWeight: 'bold'},
+			    noShadowOpts: {strokeStyle: '#999', strokeWidth: 2}});
+			setTimeout("$('#bug_status_link').btOn();",500);
+			}
+	
+			return false;
+		
+		}
+				
+		
+		function showStatusChange() { 
+
+			$('#change_bug_status').show();
+			return false;
+		
+		}
+
+		function chcontact() { 
+			if ($('#contacted_yes').attr('checked')) { 
+				$('#media_outlet_responded').show();
+			} else {
+				$('#media_outlet_responded').hide();
+				$('#responded_no').attr('checked',true);
+			}
+			chresponded();
+
+			return false;
+		}
+
+		
+		function chresponded() { 
+			if ($('#responded_yes').attr('checked')) { 
+				$('#media_response').show();
+			} else {
+				$('#media_response').hide();
+			}
+			return false;
+		}
+
+
+
+	function mo_outletupdate(json) {
+	
+		if (json.id) {
+			$('#media_outlet_id').val(json.id);
+		//	$('#media_outlet_new').hide();
+		} else {
+			$('#media_outlet_id').val('');
+		//	$('#media_outlet_new').show();		
+		}
+	
+	}
+	function mo_newcheck() { 
+		var val = $('#media_outlet_q').val();
+		$.getJSON('/api?method=bugtargetcheck&outlet='+escape(val),mo_outletupdate);
+	}
+

@@ -37,8 +37,8 @@
 			<p>Login with <a href="<? $POD->siteRoot(); ?>/openid">OpenID</a> or <a href="<? $POD->siteRoot(); ?>/facebook">Facebook</a></p>
 			<? } ?>
 
-			<? if (isset($_GET['claim'])) { 
-				$bug = $POD->getContent(array('id'=>$_GET['claim']));
+			<? if (isset($_COOKIE['claim'])) { 
+				$bug = $POD->getContent(array('id'=>$_COOKIE['claim']));
 				if ($bug->success()) { ?>
 					<div class="dialog alert">
 						<p>Once you've joined,
