@@ -213,9 +213,6 @@ this is now handled by an AJAX powered popup on the bug page.
 				}
 				$content->files()->fill();
 	
-				if ($is_new) { 
-					$content->moderatorAlert('New MediaBugs bug report: ' . $content->headline);
-				}
 	
 			} else {
 				$msg = "Error! " . $content->error();
@@ -250,6 +247,11 @@ this is now handled by an AJAX powered popup on the bug page.
 				$outlet->save();
 			}
 			$redirect = '/spam';
+		}
+
+
+		if ($is_new && $content->type !='spam') {
+			$content->moderatorAlert('New MediaBugs bug report: ' . $content->headline);
 		}
 
 		if ($can_be_claimed) {
