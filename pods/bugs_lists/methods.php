@@ -105,7 +105,7 @@ function bugTargets($POD,$count=20,$offset=0,$conditions=null) {
 }
 
 function interestingBugs($POD,$count=20,$offset=0) {
-	return $POD->getContents(array('type'=>'bug','flag.name'=>'featured','weight:!='=>'null'),'d_m_weight.value asc',$count,$offset);
+	return $POD->getContents(array('type'=>'bug','flag.name'=>'featured','weight:!='=>'null'),'d_m_weight.value+0 asc',$count,$offset);
 }
 
 function bugTypes($POD) {
