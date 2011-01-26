@@ -5,7 +5,9 @@
 		array(
 			'^bugs$'=>'bugs_browse/index.php',
 			'^bugs/$'=>'bugs_browse/index.php',
+			'^bugs/browse/(.*)/$'=>'bugs_browse/index.php?mode=$1',
 			'^bugs/browse/(.*)'=>'bugs_browse/index.php?mode=$1',
+			'^bugs/feeds/(.*)/$'=>'bugs_browse/browse_feed.php?mode=$1',		
 			'^bugs/feeds/(.*)'=>'bugs_browse/browse_feed.php?mode=$1',		
 		),
 		array()
