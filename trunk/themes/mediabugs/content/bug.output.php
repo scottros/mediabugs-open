@@ -126,7 +126,7 @@ $edit_minutes = intval(((strtotime($doc->date) + ($minutes*60)) - time())/60);
 						You created this bug. <a href="#" onclick="return showStatusChange();" id="bug_status_link" title="You can update the bug status at any time by clicking here.">Update it when its status changes, or if you contact the publication.</a>
 					</div>
 				<? } ?>
-				<? if ($POD->isAuthenticated() && ($POD->currentUser()->adminUser)) { ?>
+				<? if ($POD->isAuthenticated() && ($POD->currentUser()->adminUser) && ($POD->currentUser()->id != $doc->userId)) { ?>
 					<div id="bug_owner_message">
 						As an admin, <a href="#" onclick="return showStatusChange();" id="bug_status_link" title="You can update the bug status at any time by clicking here.">you may edit this bug's status.</a>
 					</div>
