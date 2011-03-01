@@ -33,7 +33,6 @@ function region_browseBy($b,$keyword,$sort,$offset) {
 	
 	// load up outlets in this region
 	$regional_outlets = $POD->getContents(array('type'=>'bug_target','t.value'=>$keyword),'date desc',10000);
-
 	$b->addCrumbs('<a href="' . $POD->siteRoot(false) . '/bugs/browse/region">Media outlets by region</a>');
 	$b->addCrumbs($keyword);
 

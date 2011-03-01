@@ -157,7 +157,7 @@
 								<ul>
 	
 									<li>
-										<a href="<? $POD->siteRoot(); ?>/bugs/browse/tag">Browse by Region</a>
+										<a href="<? $POD->siteRoot(); ?>/bugs/browse/region">Browse by Region</a>
 										<? $POD->output('regionmap_400'); ?>            
 										<div class="clearer"></div>	
 									</li>
