@@ -21,14 +21,20 @@
 
 	// load all potential browse modes.  
 	$dir = dirname(__FILE__).'/browsers/';
+	$includes = array();
     if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
         	if (!is_dir($file) && preg_match("/\.php/",$file)) {
-	        	include_once($dir . $file);
+        		$includes[] = $dir.$file;
 	       	} 		
         }
         closedir($dh);
+        asort($includes);
+		foreach ($includes as $file) {	
+			include_once($file);
+		}
     }
+
     
 	$offset = 0;
 	if (isset($_GET['offset'])) {
