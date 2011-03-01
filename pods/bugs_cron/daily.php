@@ -55,7 +55,7 @@
 	// and are not yet closed.
 
 	
-	$OLD_BUGS = $POD->getContents(array('type'=>'bug','date:lte'=>date('Y-m-d',strtotime('-60 days')),'bug_status:like'=>'open%'),null,100);
+	$OLD_BUGS = $POD->getContents(array('type'=>'bug','changeDate:lte'=>date('Y-m-d',strtotime('-60 days')),'bug_status:like'=>'open%'),null,100);
 	$OLD_BUGS->fill();
 	foreach ($OLD_BUGS as $bug) { 
 		
