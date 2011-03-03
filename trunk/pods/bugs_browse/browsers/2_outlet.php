@@ -1,6 +1,6 @@
 <?
 
-Browser::addBrowseMethod('outlet','outlet_starters','Browse by Media Outlet',null,'outlet_default','outlet_browseBy');
+Browser::addBrowseMethod('outlet','outlet_starters','Browse by Media Outlet',null,'outlet_default','outlet_browseBy','outletheader');
 
 function outlet_starters($b) {
 	$ret = array();
@@ -12,6 +12,9 @@ function outlet_starters($b) {
 	return $ret;
 }
 
+function outletheader($b) { 
+	$b->outlet->output('outlet.output');
+}
 
 function outlet_default($b,$sort,$offset) {
 
@@ -38,7 +41,7 @@ function outlet_default($b,$sort,$offset) {
 
 function outlet_browseBy($b,$keyword,$sort,$offset) { 
 	$outlet = $b->POD->getContent(array('id'=>$keyword));
-	
+	$b->outlet = $outlet;	
 	$b->addCrumbs('<a href="' . $b->POD->siteRoot(false).'/bugs/browse/outlet">Media Outlets</a>');
 	$b->addCrumbs($outlet->headline);
 	return array('bug_target'=>$outlet->id,'bug_status:!='=>'closed:off topic');

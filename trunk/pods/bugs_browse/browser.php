@@ -50,6 +50,7 @@ class Browser {
 	static private $modes = array();
 	public $crumbs = array();
 	public $POD;
+	public $mode = null;
 	
 	function Browser($POD,$breadcrumbs=null) { 
 
@@ -82,6 +83,8 @@ class Browser {
 	
 	// display a short, simple list of places to start browsing
 	function browseStarters($mode) { 
+		$this->mode = $mode;
+
 		$args = array();
 		if (self::$modes[$mode]['starters']) {
 			
@@ -116,6 +119,7 @@ class Browser {
 
 	// display all the ways to browse by this mode
 	function browseDefault($mode,$sort,$offset) {
+		$this->mode = $mode;
 		if (self::$modes[$mode]['default']) {
 			call_user_func_array(self::$modes[$mode]['default'],array($this,$sort,$offset));
 		}
@@ -124,6 +128,7 @@ class Browser {
 
 	// display results for this term
 	function browseBy($mode,$keyword,$sort,$offset,$return=false) { 
+		$this->mode = $mode;
 		if (self::$modes[$mode]['browseby']) {
 			$query = call_user_func_array(self::$modes[$mode]['browseby'],array($this,$keyword,$sort,$offset));
 			if ($return) {
@@ -138,6 +143,9 @@ class Browser {
 
 		$docs = $this->query($query,$sort,$offset);
 		$this->crumbs();
+		if (self::$modes[$this->mode]['browseheaderfunction']) {
+			call_user_func_array(self::$modes[$this->mode]['browseheaderfunction'],array($this));
+		}
 		$docs->output('short','browse.header','pager',null,'No bugs found that match your criteria',"&q=".urlencode($keyword) . "&sort={$sort}"); 
 
 	}
@@ -176,13 +184,14 @@ class Browser {
 
 
 
-	function addBrowseMethod($path,$starters,$title,$headerfunction=null,$default=null,$browseby) {
+	function addBrowseMethod($path,$starters,$title,$headerfunction=null,$default=null,$browseby,$browseheaderfunction=null) {
 	
 		self::$modes[$path]['starters'] = $starters;
 		self::$modes[$path]['title'] = $title;
 		self::$modes[$path]['headerfunction'] = $headerfunction;
 		self::$modes[$path]['default'] = $default;
 		self::$modes[$path]['browseby'] = $browseby;
+		self::$modes[$path]['browseheaderfunction'] = $browseheaderfunction;
 	
 	}
 
