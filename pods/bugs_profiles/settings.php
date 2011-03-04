@@ -1,5 +1,6 @@
 <?
 
-	$POD->registerPOD('bugs_profiles','Give each member a personal profile',array('^people/(.*)'=>'bugs_profiles/profile.php?username=$1','^editprofile'=>'bugs_profiles/editprofile.php'),array('profilePath'=>'/people'));
+	$POD->registerPOD('bugs_tests','test the json widget',
+                array('^bugs_tests$'=>'bugs_test_json/profile.php'),array());
 
 ?>
