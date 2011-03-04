@@ -12,17 +12,14 @@
 /**********************************************/
 	include_once("../../PeoplePods.php");
 	$POD = new PeoplePod(array('debug'=>0,'authSecret'=>$_COOKIE['pp_auth']));
-	
-	$profile_username = stripslashes($_GET['username']);
-	$PROFILE_PERSON = $POD->getPerson(array('nick'=>$profile_username));	
-	if ($PROFILE_PERSON->success()) { 
-		$POD->header($PROFILE_PERSON->get('nick'));
-		$PROFILE_PERSON->output();
-		$POD->footer();
-	} else {
-		header("Status: 404 Not Found");
-		echo "404 Not Found";
-	}
-	
-	
+        $POD->header();
+		
 ?>
+
+
+<div id="widget">
+    <ul id="bug_list"></ul>
+</div>
+
+
+<?php $POD->footer(); ?>
