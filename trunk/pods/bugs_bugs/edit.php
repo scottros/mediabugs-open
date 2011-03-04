@@ -370,7 +370,15 @@ this is now handled by an AJAX powered popup on the bug page.
 				$new->output('bug.form.widget');
 				$POD->output('footer.widget');
 							
-			} else { 
+			}
+                        else if($_GET['mode']== "washington"){
+
+                                $POD->output('header.widget');
+				$new->output('bug.form.washington');
+				$POD->output('footer.widget');
+
+                        }
+                        else {
  	
 				$POD->header("Add Something");
 				$new->output($input_template);
