@@ -33,6 +33,7 @@
 	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/tinymce/jscripts/tiny_mce/jquery.tinymce.js"></script>
 	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/jquery.validate.min.js"></script>
 	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/jcaption.min.js"></script>
+        <script type="text/javascript" src="<? $POD->templateDir(); ?>/js/jquery.template.js"></script>
 
 	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/jquery-datepick/jquery.datepick.js"></script>
 	<script type="text/javascript" src="<? $POD->templateDir(); ?>/js/jquery-datepick/jquery.datepick-validation.js"></script>
